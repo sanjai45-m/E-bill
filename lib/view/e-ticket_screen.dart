@@ -140,25 +140,25 @@ class _ETicketScreenState extends State<ETicketScreen>
 
   void _resetForm() {
     setState(() {
-      // Clear all text fields
+
       vehicleData.vehicleNameController.clear();
       vehicleData.vehicleNumberController.clear();
       vehicleData.vehicleColorController.clear();
       vehicleData.phoneController.clear(); 
       selectedVehicleType = null;
       selectedModel=null;
-      // Reset state variables using the setter method
+
       vehicleData.setSelectedVehicleType(VehicleType.bike); // Reset to default
       vehicleData.selectedVehicleName = null;
       vehicleData.selectedDate = null;
       vehicleData.isImageSaved = false;
        vehicleTypeError='';
-      // Reset popup values
-      selectedFloor = null; // Reset selected floor
-      selectedSection = null; // Reset selected section
-      selectedSpot = null; // Reset selected spot
 
-      // Reset dropdownValue to its default text
+      selectedFloor = null;
+      selectedSection = null;
+      selectedSpot = null;
+
+
       dropdownValue = 'Floor, Section, and Spot';
     });
   }
@@ -183,7 +183,7 @@ class _ETicketScreenState extends State<ETicketScreen>
                   children: List.generate(initialSpots.length, (index) {
                     String spot = initialSpots[index];
                     String uniqueSpotKey =
-                        '$section-$spot'; // Combine section and spot to make unique key
+                        '$section-$spot';
 
                     return ListTile(
                       title: Text('Row 1 - Spot $spot'),
@@ -204,7 +204,7 @@ class _ETicketScreenState extends State<ETicketScreen>
                           });
                           Navigator.of(context).pop();
 
-                          // Store the selected section-spot combination as filled
+
                           filledSpots.add(uniqueSpotKey);
                         }
                       },
@@ -249,7 +249,7 @@ class _ETicketScreenState extends State<ETicketScreen>
         ],
 
         elevation: 0,
-        // backgroundColor: Color(0xFF004EA3),
+
       ),
       body: Stack(
         children: [
@@ -303,18 +303,18 @@ class _ETicketScreenState extends State<ETicketScreen>
                               setState(() {
                                 selectedVehicleType = newValue;
                                 vehicleTypeError = ''; // Clear error
-                                selectedModel = null; // Reset model selection
+                                selectedModel = null;
                               });
                             },
                           ),
                         ),
-                        // Error hint for vehicle type
+
                         if (vehicleTypeError.isNotEmpty)
                           Text(vehicleTypeError,
                               style: TextStyle(color: Colors.red)),
                         SizedBox(height: 16),
 
-                        // Vehicle Model Dropdown (always visible)
+
                         Container(
                           height: 56,
                           child: FutureBuilder(
@@ -345,12 +345,12 @@ class _ETicketScreenState extends State<ETicketScreen>
                             },
                           ),
                         ),
-                        // Error hint for model
+
                         if (modelError.isNotEmpty)
                           Text(modelError, style: TextStyle(color: Colors.red)),
                         SizedBox(height: 16),
 
-                        // Floor Selection (PopupMenu)
+
                         Container(
                           height: 56,
                           padding: EdgeInsets.symmetric(horizontal: 12),
@@ -418,7 +418,7 @@ class _ETicketScreenState extends State<ETicketScreen>
                         ),
                         SizedBox(height: 16),
 
-                        // Vehicle Color
+
                         TextFormField(
                           controller: vehicleData.vehicleColorController,
                           decoration: InputDecoration(
@@ -484,12 +484,12 @@ class _ETicketScreenState extends State<ETicketScreen>
                           onPressed: () {
                             // Reset error messages
                             setState(() {
-                              vehicleTypeError = '';  // Reset vehicle type error
-                              modelError = '';        // Reset model error
-                              floorError = '';        // Reset floor error
+                              vehicleTypeError = '';
+                              modelError = '';
+                              floorError = '';
                             });
 
-                            // Validation logic for dropdowns and form
+
                             if (selectedVehicleType == null) {
                               setState(() {
                                 vehicleTypeError = 'Please select vehicle type';
@@ -506,7 +506,7 @@ class _ETicketScreenState extends State<ETicketScreen>
                               });
                             }
 
-                            // Check if the form is valid and if there are no errors
+
                             if (vehicleData.formKey.currentState!.validate() &&
                                 selectedVehicleType != null &&
                                 selectedModel != null &&
@@ -529,9 +529,9 @@ class _ETicketScreenState extends State<ETicketScreen>
                               horizontal: 24,
                             ),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30), // Rounded corners
+                              borderRadius: BorderRadius.circular(30),
                             ),
-                            elevation: 5,                   // Shadow effect
+                            elevation: 5,
                           ),
                         ),
 

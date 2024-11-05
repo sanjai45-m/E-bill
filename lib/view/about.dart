@@ -76,8 +76,8 @@ class AboutScreen extends StatelessWidget {
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               Text(
-                'Email: support@eparkingapp.com\n'
-                    'Phone: +199361557446',
+                'Email: email.com\n'
+                    'Phone: +1234567890',
                 style: TextStyle(fontSize: 16),
               ),
               SizedBox(height: 20),
@@ -105,8 +105,7 @@ class AboutScreen extends StatelessWidget {
               // Privacy Policy
               GestureDetector(
                 onTap: () {
-                  // Navigate to Privacy Policy
-                  // Implement the navigation to privacy policy screen
+
                 },
                 child: Text(
                   'Privacy Policy',

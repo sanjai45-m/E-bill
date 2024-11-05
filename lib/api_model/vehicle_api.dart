@@ -3,7 +3,7 @@ import 'package:e_bill/models/vehicles_type_data.dart';
 import 'package:http/http.dart' as http;
 
 class VehicleApi {
-  final String baseUrl = 'https://parking-bill-50022835740.development.catalystappsail.in/vehicles'; // Update with your IP address
+  final String baseUrl = '<base-url>'; // Update with backend
 
   List<VehicleTypeData> vehicles = [];
 
@@ -23,16 +23,16 @@ class VehicleApi {
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
-      body: json.encode(vehicle.toJson()), // Ensure to use the correct method
+      body: json.encode(vehicle.toJson()),
     );
 
-    print('Response status: ${response.statusCode}'); // Debugging line
-    print('Response body: ${response.body}'); // Debugging line
+    print('Response status: ${response.statusCode}');
+    print('Response body: ${response.body}');
 
     if (response.statusCode != 200 && response.statusCode != 201) {
-      throw Exception('Failed to add vehicle: ${response.body}'); // Include body for more context
+      throw Exception('Failed to add vehicle: ${response.body}');
     }
-    await fetchVehicles(); // Refresh the vehicle list
+    await fetchVehicles();
   }
 
 
@@ -48,7 +48,7 @@ class VehicleApi {
     if (response.statusCode != 200) {
       throw Exception('Failed to edit vehicle');
     }
-    await fetchVehicles(); // Refresh the vehicle list
+    await fetchVehicles();
   }
 
   Future<void> deleteVehicle(int id) async {
@@ -56,6 +56,6 @@ class VehicleApi {
     if (response.statusCode != 204) {
       throw Exception('Failed to delete vehicle');
     }
-    await fetchVehicles(); // Refresh the vehicle list
+    await fetchVehicles();
   }
 }

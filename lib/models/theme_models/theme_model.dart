@@ -6,7 +6,7 @@ class ThemeModel {
 
   Future<bool> getThemePreference() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getBool(_themeKey) ?? false; // Default is light theme
+    return prefs.getBool(_themeKey) ?? false;
   }
 
   Future<void> setThemePreference(bool isDark) async {

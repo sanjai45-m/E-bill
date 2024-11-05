@@ -123,7 +123,7 @@ class CustomDropdowns extends StatelessWidget {
           );
         }).toList(),
         onChanged: onChanged,
-        underline: SizedBox(), // Remove default underline
+        underline: SizedBox(),
       ),
     );
   }

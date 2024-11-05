@@ -1,4 +1,3 @@
-
 import 'package:e_bill/app_widgets/drawer.dart';
 import 'package:e_bill/view/private%20and%20policy.dart';
 import 'package:e_bill/view/terms%20and%20conditions.dart';
@@ -14,32 +13,29 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-  String? selectedLanguage; // Variable to hold the selected language
+  String? selectedLanguage;
 
   @override
   void initState() {
     super.initState();
-    selectedLanguage = 'English'; // Set default language
+    selectedLanguage = 'English';
+  }
 
-}
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
       drawer: Drawers(),
-      appBar: AppBar(
-        title: Text('Settings'),centerTitle: true
-      ),
+      appBar: AppBar(title: Text('Settings'), centerTitle: true),
       body: ListView(
         padding: EdgeInsets.all(16.0),
         children: [
-          // Theme Toggle
           ListTile(
             title: Text("Theme"),
             trailing: Switch(
               value: themeProvider.isDarkTheme,
               onChanged: (value) {
-                themeProvider.toggleTheme(); // Toggle the theme
+                themeProvider.toggleTheme();
               },
               activeTrackColor: Colors.yellow[700],
               activeColor: Colors.white,
@@ -49,12 +45,12 @@ class _SettingsState extends State<Settings> {
           ),
           Divider(),
 
-          // Language Selection
           ListTile(
             title: Text("Language"),
             trailing: DropdownButton<String>(
               value: selectedLanguage,
-              items: <String>['English', 'Tamil', 'Hindi'].map((String language) {
+              items:
+                  <String>['English', 'Tamil', 'Hindi'].map((String language) {
                 return DropdownMenuItem<String>(
                   value: language,
                   child: Text(language),
@@ -62,7 +58,8 @@ class _SettingsState extends State<Settings> {
               }).toList(),
               onChanged: (String? newValue) {
                 setState(() {
-                  selectedLanguage = newValue; // Update the state with the selected language
+                  selectedLanguage =
+                      newValue;
                 });
               },
             ),
@@ -73,17 +70,15 @@ class _SettingsState extends State<Settings> {
           ListTile(
             title: Text("Notifications"),
             trailing: Switch(
-              value: true, // Set the default value for notifications
+              value: true,
               onChanged: (value) {
-                // Handle notification toggle
+
               },
             ),
           ),
           Divider(),
 
 
-
-          // Contact Support
           ListTile(
             title: Text("Contact Support"),
             onTap: () {
@@ -92,7 +87,7 @@ class _SettingsState extends State<Settings> {
           ),
           Divider(),
 
-          // Privacy Policy
+
           ListTile(
             title: Text("Privacy Policy"),
             onTap: () {
@@ -111,7 +106,7 @@ class _SettingsState extends State<Settings> {
             },
           ),
           Divider(),
-          // About
+
           ListTile(
             title: Text("About"),
             onTap: () {
@@ -123,7 +118,6 @@ class _SettingsState extends State<Settings> {
           Divider(),
 
 
-          // Clear Cache
           ListTile(
             title: Text("Clear Cache"),
             onTap: () async {
@@ -132,10 +126,10 @@ class _SettingsState extends State<Settings> {
           ),
           Divider(),
 
-          // App Version
+
           ListTile(
             title: Text("App Version"),
-            subtitle: Text("Version 1.0.0"), // You can fetch the actual version
+            subtitle: Text("Version 1.0.0"),
           ),
         ],
       ),

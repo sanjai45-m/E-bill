@@ -127,19 +127,18 @@ class TermsAndConditionsScreen extends StatelessWidget {
             ),
             Text(
               'If you have any questions or concerns regarding these Terms and Conditions, please contact us at:\n'
-                  '- Email: eparkingbill@gmail.com\n'
-                  '- Phone: 9361557446',
+                  '- Email: ee@gmail.com\n'
+                  '- Phone: 1234567890',
             ),
             SizedBox(height: 32),
-            // A button to accept the terms
             ElevatedButton(
               onPressed: () {
-                // Navigate back or perform an action
+
                 Navigator.pop(context);
               },
               child: Text('Accept',style: TextStyle(color: Colors.white),),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFF004EA3), // Your preferred color
+                backgroundColor: Color(0xFF004EA3),
               ),
             ),
           ],

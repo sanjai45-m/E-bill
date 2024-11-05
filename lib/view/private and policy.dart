@@ -104,15 +104,15 @@ class PrivacyPolicyScreen extends StatelessWidget {
                   '- Phone: 9361557446',
             ),
             SizedBox(height: 32),
-            // A button to accept the privacy policy
+
             ElevatedButton(
               onPressed: () {
-                // Navigate back or perform an action
+
                 Navigator.pop(context);
               },
               child: Text('Accept'),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFF004EA3), // Your preferred color
+                backgroundColor: Color(0xFF004EA3),
               ),
             ),
           ],

@@ -34,11 +34,11 @@ class Vehicle {
     isRunning = false;
     if (startTime != null) {
       elapsedTime += DateTime.now().difference(startTime!);
-      startTime = null; // Reset startTime
+      startTime = null;
     }
   }
 
-  // Method to get total elapsed seconds
+
   int getTotalElapsedSeconds() {
     return elapsedTime.inSeconds + (isRunning ? DateTime.now().difference(startTime!).inSeconds : 0);
   }

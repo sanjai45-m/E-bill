@@ -31,7 +31,7 @@ class VehicleProvider with ChangeNotifier {
     if (availableSpots.contains(spot)) {
       filledSpots.add(spot);
       availableSpots.remove(spot);
-      notifyListeners(); // Notify UI to update
+      notifyListeners();
     }
   }
 
@@ -39,7 +39,7 @@ class VehicleProvider with ChangeNotifier {
     if (filledSpots.contains(spot)) {
       availableSpots.add(spot);
       filledSpots.remove(spot);
-      notifyListeners(); // Notify UI to update
+      notifyListeners();
     }
   }
 
@@ -50,7 +50,7 @@ class VehicleProvider with ChangeNotifier {
   void removeVehicle(int index) {
     if (index >= 0 && index < _vehicles.length) {
       _vehicles.removeAt(index);
-      notifyListeners();  // Notify the UI about the vehicle removal
+      notifyListeners();
     }
   }
 

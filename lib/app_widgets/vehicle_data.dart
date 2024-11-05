@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'widgets_and_data.dart';
 
 class VehicleData {
-  VehicleType _selectedVehicleType = VehicleType.bike; // Default value
+  VehicleType _selectedVehicleType = VehicleType.bike;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   late AnimationController animationController;
   TextEditingController vehicleNameController = TextEditingController();
@@ -13,8 +13,8 @@ class VehicleData {
   DateTime? selectedDate;
   String currentTime = '';
   int initialAmount = 30;
-  bool isImageSaved = false; // Track image saving state
-  String? savedImagePath; // Store saved image path
+  bool isImageSaved = false;
+  String? savedImagePath;
   String searchQuery = '';
   List<String> vehicleNames = [];
   String? selectedVehicleName;

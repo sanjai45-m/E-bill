@@ -19,7 +19,7 @@ class VehicleTypeData {
       'vehicleType': vehicleType,
     };
   }
-  // Copy method
+
   VehicleTypeData copyWith({int? id, String? name, String? vehicleType}) {
     return VehicleTypeData(
       id: id ?? this.id,

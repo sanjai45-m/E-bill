@@ -16,35 +16,35 @@ class _VehicleManageState extends State<VehicleManage> {
   @override
   void initState() {
     super.initState();
-    data.fetchVehicles(); // Fetch data when the widget is initialized
+    data.fetchVehicles();
   }
 
-  // Method to show a dialog for adding or editing a vehicle
+
   Future<void> _showVehicleDialog({VehicleTypeData? vehicle}) async {
     final isEditing = vehicle != null;
     final nameController = TextEditingController(text: isEditing ? vehicle.name : '');
-    String selectedVehicleType = isEditing ? vehicle.vehicleType : 'Car'; // Default to 'Car'
+    String selectedVehicleType = isEditing ? vehicle.vehicleType : 'Car';
 
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12), // Rounded corners for a modern look
+            borderRadius: BorderRadius.circular(12),
           ),
           title: Text(
             isEditing ? 'Edit Vehicle' : 'Add Vehicle',
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
-              color: Colors.blueAccent, // Accent color for title
+              color: Colors.blueAccent,
             ),
           ),
           content: StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
               return Column(
                 mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start, // Align content to the left
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   TextField(
                     controller: nameController,
@@ -83,7 +83,7 @@ class _VehicleManageState extends State<VehicleManage> {
                     }).toList(),
                     onChanged: (String? newValue) {
                       setState(() {
-                        selectedVehicleType = newValue!; // Update selected vehicle type
+                        selectedVehicleType = newValue!;
                       });
                     },
                   ),
@@ -97,32 +97,32 @@ class _VehicleManageState extends State<VehicleManage> {
                 if (isEditing) {
                   // Edit existing vehicle
                   VehicleTypeData updatedVehicle = vehicle.copyWith(
-                    name: nameController.text, // Update the name
-                    vehicleType: selectedVehicleType, // Update vehicle type
+                    name: nameController.text,
+                    vehicleType: selectedVehicleType,
                   );
                   data.editVehicle(updatedVehicle).then((_) {
-                    if (mounted) { // Check if the widget is still mounted
-                      setState(() {}); // Refresh the list
+                    if (mounted) {
+                      setState(() {});
                     }
-                    Navigator.of(context).pop(); // Close the dialog
+                    Navigator.of(context).pop();
                   });
                 } else {
                   // Add new vehicle
                   VehicleTypeData newVehicle = VehicleTypeData(
-                    id: 0, // Placeholder ID, assuming the server will assign a real one
+                    id: 0,
                     name: nameController.text,
-                    vehicleType: selectedVehicleType, // Use the selected vehicle type
+                    vehicleType: selectedVehicleType,
                   );
                   data.addVehicle(newVehicle).then((_) {
-                    if (mounted) { // Check if the widget is still mounted
-                      setState(() {}); // Refresh the list
+                    if (mounted) {
+                      setState(() {});
                     }
-                    Navigator.of(context).pop(); // Close the dialog
+                    Navigator.of(context).pop();
                   });
                 }
               },
               style: TextButton.styleFrom(
-                backgroundColor: Colors.blueAccent, // Button color
+                backgroundColor: Colors.blueAccent,
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
@@ -131,7 +131,7 @@ class _VehicleManageState extends State<VehicleManage> {
               child: Text(
                 isEditing ? 'Edit' : 'Add',
                 style: TextStyle(
-                  color: Colors.white, // Button text color
+                  color: Colors.white,
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                 ),
@@ -156,12 +156,10 @@ class _VehicleManageState extends State<VehicleManage> {
 
   @override
   void dispose() {
-    // If you have any timers or listeners, be sure to cancel them here
     super.dispose();
   }
 
 
-  // Method to handle delete action
   void _deleteVehicle(int id) {
     data.deleteVehicle(id).then((_) {
       setState(() {});
@@ -234,7 +232,7 @@ class _VehicleManageState extends State<VehicleManage> {
                   );
                 },
               ),
-              // Car tab content
+
               FutureBuilder(
                 future: data.fetchVehicles(),
                 builder: (context, snapshot) {

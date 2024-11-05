@@ -24,13 +24,13 @@ class StopwatchScreen extends StatefulWidget {
 }
 
 class _StopwatchScreenState extends State<StopwatchScreen> {
-  List<String> filledSpots = []; // Add this at the top if it's not defined
-  List<String> availableSpots = []; // If not already defined
+  List<String> filledSpots = [];
+  List<String> availableSpots = [];
   List<Map<String, dynamic>> filteredVehicles = [];
   final int parkingRate = 5;
 // Default value
   DateTime? selectedDate;
-  bool _isImageSaved = false; // Track image saving state
+  bool _isImageSaved = false;
   String? savedImagePath;
   double _totalAmount = 0.0;
 
@@ -46,11 +46,9 @@ class _StopwatchScreenState extends State<StopwatchScreen> {
     PermissionStatus status = await Permission.storage.status;
 
     if (!status.isGranted) {
-      // Request permission if it's not granted
       await Permission.storage.request();
     }
 
-    // For Android 11 and above, request MANAGE_EXTERNAL_STORAGE if necessary
     if (await Permission.manageExternalStorage.isPermanentlyDenied) {
       await Permission.manageExternalStorage.request();
     }
@@ -60,7 +58,7 @@ class _StopwatchScreenState extends State<StopwatchScreen> {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       _totalAmount =
-          prefs.getDouble('totalAmount') ?? 0.0; // Default to 0.0 if not found
+          prefs.getDouble('totalAmount') ?? 0.0;
     });
   }
 
@@ -74,7 +72,6 @@ class _StopwatchScreenState extends State<StopwatchScreen> {
     super.didChangeDependencies();
     final vehiclesProvider = Provider.of<VehicleProvider>(context);
 
-    // Fetch updated vehicles
     setState(() {
       filteredVehicles = vehiclesProvider.vehicles.map((vehicle) {
         return {
@@ -89,8 +86,8 @@ class _StopwatchScreenState extends State<StopwatchScreen> {
           "timer": null,
           "startingTime": vehicle.startingTime,
           "vehicleColor": vehicle.vehicleColor,
-          "billGenerated": false, // Reset billGenerated here
-          "hasGeneratedBill": false, // New property for bill generation
+          "billGenerated": false,
+          "hasGeneratedBill": false,
         };
       }).toList();
     });
@@ -112,11 +109,11 @@ class _StopwatchScreenState extends State<StopwatchScreen> {
             filteredVehicles[index]["value"] =
                 (filteredVehicles[index]["secondsElapsed"] / 60) * parkingRate;
           }
-          _updateTotalAmount(); // Update total amount during the timer
+          _updateTotalAmount();
         });
       });
     });
-    await _saveTimerState(); // Save the timer state for persistence
+    await _saveTimerState();
   }
 
 
@@ -126,18 +123,14 @@ class _StopwatchScreenState extends State<StopwatchScreen> {
       filteredVehicles[index]["timer"]?.cancel();
       filteredVehicles[index]["startTime"] = null;
 
-      // Calculate final cost
       filteredVehicles[index]["value"] =
           (filteredVehicles[index]["secondsElapsed"] / 60) * parkingRate;
       filteredVehicles[index]["billGenerated"] = true;
 
-      // Generate the spot key
 
-      // Release the parking spot via VehicleProvider
       Provider.of<VehicleProvider>(context, listen: false)
           .releaseSpot(widget.selectedSpot);
 
-      // Update the total amount immediately after stopping the timer
       _updateTotalAmount();
     });
 
@@ -150,25 +143,22 @@ class _StopwatchScreenState extends State<StopwatchScreen> {
       total += vehicle["value"] ?? 0.0;
     }
     setState(() {
-      _totalAmount = total; // Set the new total amount
+      _totalAmount = total;
     });
 
-    // Store the updated total amount in SharedPreferences
     _storeTotalAmount();
   }
 
-// Call this function to restore timer states when the screen loads
   void restoreTimerState() {
     for (var vehicle in filteredVehicles) {
       if (vehicle["isRunning"] == true && vehicle["startTime"] != null) {
-        // Re-create the timer if the vehicle was running when navigating away
         vehicle["timer"] = Timer.periodic(Duration(seconds: 1), (timer) {
           setState(() {
             vehicle["secondsElapsed"]++;
             if (vehicle["secondsElapsed"] % 60 == 0) {
               vehicle["value"] = (vehicle["secondsElapsed"] / 60) * parkingRate;
             }
-            _updateTotalAmount(); // Update total amount during the timer
+            _updateTotalAmount();
           });
         });
       }
@@ -176,7 +166,7 @@ class _StopwatchScreenState extends State<StopwatchScreen> {
   }
 
   int approximateTextWidth(String text) {
-    const int characterWidth = 12; // Adjust as necessary
+    const int characterWidth = 12;
     return text.length * characterWidth;
   }
 
@@ -187,15 +177,13 @@ class _StopwatchScreenState extends State<StopwatchScreen> {
   }
 
   Future<void> _generateTicket(int index) async {
-    // Check if index is within valid range
     if (index < 0 || index >= filteredVehicles.length) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text('Invalid vehicle index: $index'),
       ));
-      return; // Exit the function to prevent further errors
+      return;
     }
 
-    // Access the vehicle data from filteredVehicles
     final vehicleName = filteredVehicles[index]["name"];
     final vehicleNumber = filteredVehicles[index]["number"];
     final ownerName = filteredVehicles[index]["phone"];
@@ -244,10 +232,9 @@ class _StopwatchScreenState extends State<StopwatchScreen> {
       'Cost',
     ];
 
-    // Draw the title
     String titleText = "E-parking Bill";
     int titleYPosition =
-        startY - lineHeight - 20; // Current position for the title
+        startY - lineHeight - 20;
 
     img.drawString(
       ticketImage,
@@ -258,11 +245,9 @@ class _StopwatchScreenState extends State<StopwatchScreen> {
       color: img.ColorRgb8(0, 0, 0),
     );
 
-    // Add extra space between the title and the labels
-    int extraSpace = 30; // Adjust this value for more or less space
-    startY += extraSpace; // Move the starting position down by extra space
+    int extraSpace = 30;
+    startY += extraSpace;
 
-    // Values corresponding to the labels
     List<String> values = [
       vehicleName,
       vehicleNumber,
@@ -275,7 +260,6 @@ class _StopwatchScreenState extends State<StopwatchScreen> {
       '${cost.toStringAsFixed(2)}', // Format cost as currency
     ];
 
-    // Drawing labels and values
     for (int i = 0; i < labels.length; i++) {
       img.drawString(
         ticketImage,
@@ -296,21 +280,19 @@ class _StopwatchScreenState extends State<StopwatchScreen> {
       );
     }
 
-    // Load vehicle image based on vehicle type
     img.Image vehicleImage;
     if (vehicleType == "Car") {
-      vehicleImage = await _loadCarImage(); // Load car image
+      vehicleImage = await _loadCarImage();
     } else {
-      vehicleImage = await _loadBikeImage(); // Load bike image
+      vehicleImage = await _loadBikeImage();
     }
-    // Draw the vehicle image below the last label-value pair
     int vehicleImageHeight = 150;
     int vehicleImageWidth =
         (vehicleImage.width * vehicleImageHeight) ~/ vehicleImage.height;
 
     int imageYPosition = startY +
         (labels.length * lineHeight) +
-        20; // Below the last label-value
+        20;
     img.compositeImage(
       ticketImage,
       vehicleImage,
@@ -320,11 +302,10 @@ class _StopwatchScreenState extends State<StopwatchScreen> {
       dstW: vehicleImageWidth,
     );
 
-    // Add the note text at the bottom
     String noteText =
         "Note: The initial parking charge is 50/-, and the fee doubles for each additional hour.";
     int noteYPosition =
-        imageYPosition + vehicleImageHeight + 30; // Below the vehicle image
+        imageYPosition + vehicleImageHeight + 30;
 
     img.drawString(
       ticketImage,
@@ -335,22 +316,18 @@ class _StopwatchScreenState extends State<StopwatchScreen> {
       color: img.ColorRgb8(0, 0, 0),
     );
 
-    // Save the ticket as an image
     await _saveImage(ticketImage, ownerName);
 
-    // Show snackbar and then add vehicle details
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text('Ticket saved to ${ownerName}.png'),
     ));
 
-    // Wait for snackbar to display before adding vehicle details
     await Future.delayed(Duration(seconds: 2));
 
-    // Add vehicle details after the ticket is saved
     setState(() {
-      filteredVehicles[index]["billGenerated"] = true; // Mark bill as generated
+      filteredVehicles[index]["billGenerated"] = true;
       filteredVehicles[index]["hasGeneratedBill"] =
-          true; // Track bill generation
+          true;
     });
   }
 
@@ -372,10 +349,9 @@ class _StopwatchScreenState extends State<StopwatchScreen> {
     if (await Permission.storage.request().isGranted) {
       Uint8List pngBytes = Uint8List.fromList(img.encodePng(image));
 
-      // Get the path to save the image
       String? path = await AndroidPathProvider.picturesPath;
 
-      // Use owner's phone number for the file name
+
       String filePath = '$path/$ownerPhone.png';
 
       File imgFile = File(filePath);
@@ -383,7 +359,7 @@ class _StopwatchScreenState extends State<StopwatchScreen> {
 
       setState(() {
         _isImageSaved = true;
-        savedImagePath = filePath; // Save the path for sharing
+        savedImagePath = filePath;
       });
 
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -412,7 +388,7 @@ class _StopwatchScreenState extends State<StopwatchScreen> {
   Future<void> _shareTicket(int index) async {
     if (savedImagePath != null) {
       final phoneNumber = filteredVehicles[index]["phone"];
-      XFile imageFile = XFile(savedImagePath!); // Create XFile for sharing
+      XFile imageFile = XFile(savedImagePath!);
 
       await ShareWhatsapp().shareFile(
         imageFile,
@@ -429,7 +405,7 @@ class _StopwatchScreenState extends State<StopwatchScreen> {
       prefs.setInt('secondsElapsed_$i', filteredVehicles[i]["secondsElapsed"]);
       prefs.setDouble('value_$i', filteredVehicles[i]["value"]);
       prefs.setBool('billGenerated_$i',
-          filteredVehicles[i]["billGenerated"]); // Save bill generated state
+          filteredVehicles[i]["billGenerated"]);
       prefs.setString('startTime_$i',
           filteredVehicles[i]["startTime"]?.toIso8601String() ?? '');
     }
@@ -442,7 +418,7 @@ class _StopwatchScreenState extends State<StopwatchScreen> {
       int secondsElapsed = prefs.getInt('secondsElapsed_$i') ?? 0;
       double value = prefs.getDouble('value_$i') ?? 0;
       bool billGenerated = prefs.getBool('billGenerated_$i') ??
-          false; // Load bill generated state
+          false;
       String startTimeString = prefs.getString('startTime_$i') ?? '';
 
       if (startTimeString.isNotEmpty && isRunning) {
@@ -491,7 +467,7 @@ class _StopwatchScreenState extends State<StopwatchScreen> {
               (phone != null && phone.toLowerCase().contains(query.toLowerCase()));
         }).toList();
       } else {
-        filteredVehicles = allVehicles; // Reset to all vehicles if query is empty
+        filteredVehicles = allVehicles;
       }
     });
   }
@@ -512,7 +488,7 @@ class _StopwatchScreenState extends State<StopwatchScreen> {
       appBar: AppBar(
         title: const Text(
           'Parking Timer ',
-        ), // 'title' is a named parameter, and 'Text' should be passed correctly
+        ),
           centerTitle: true
       ),
       body: Column(
@@ -652,12 +628,12 @@ class _StopwatchScreenState extends State<StopwatchScreen> {
                                       color: Colors.blueAccent,
                                     ),
                                   ),
-                                  if (filteredVehicles[index]["hasGeneratedBill"]) // Update this condition
+                                  if (filteredVehicles[index]["hasGeneratedBill"])
                                     ElevatedButton(
                                       onPressed: () => _shareTicket(index),
                                       style: ElevatedButton.styleFrom(
-                                        foregroundColor: Colors.white, backgroundColor: Colors.blue, // Text color
-                                        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15), // Padding
+                                        foregroundColor: Colors.white, backgroundColor: Colors.blue ,
+                                        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),// Padding
                                         shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(12), // Rounded corners
                                         ),
@@ -671,17 +647,17 @@ class _StopwatchScreenState extends State<StopwatchScreen> {
                                         ),
                                       ),
                                     ),
-                                  SizedBox(height: 10), // Spacing between buttons
-                                  if (filteredVehicles[index]["hasGeneratedBill"]) // Update this condition
+                                  SizedBox(height: 10),
+                                  if (filteredVehicles[index]["hasGeneratedBill"])
                                   ElevatedButton(
                                     onPressed: () => _shareBillViaWhatsApp(index),
                                     style: ElevatedButton.styleFrom(
                                       foregroundColor: Colors.white, backgroundColor: Colors.green, // Text color
                                       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10), // Padding
                                       shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(12), // Rounded corners
+                                        borderRadius: BorderRadius.circular(12),
                                       ),
-                                      elevation: 5, // Shadow effect
+                                      elevation: 5,
                                     ),
                                     child: Text(
                                       'Share via WhatsApp',
@@ -697,7 +673,6 @@ class _StopwatchScreenState extends State<StopwatchScreen> {
                           ),
                           SizedBox(height: 10),
 
-                          // Display Start/Stop/Generate buttons based on the timer state
                           if (filteredVehicles[index]["isRunning"] == true)
                             ElevatedButton(
                               onPressed: () => _stopTimer(index),
