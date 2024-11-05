@@ -15,7 +15,6 @@ class AboutScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // App Title and Logo
               Center(
                 child: Column(
                   children: [
@@ -30,14 +29,12 @@ class AboutScreen extends StatelessWidget {
               ),
               SizedBox(height: 20),
         
-              // Description
               Text(
                 'The E-Parking Bill App allows users to manage parking tickets efficiently and share them easily. Our goal is to enhance your parking experience.',
                 style: TextStyle(fontSize: 16),
               ),
               SizedBox(height: 20),
         
-              // Key Features
               Text(
                 'Key Features:',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -55,7 +52,6 @@ class AboutScreen extends StatelessWidget {
               ),
               SizedBox(height: 20),
         
-              // How to Use
               Text(
                 'How to Use:',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -70,7 +66,6 @@ class AboutScreen extends StatelessWidget {
               ),
               SizedBox(height: 20),
         
-              // Contact Information
               Text(
                 'Contact Us:',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -82,7 +77,6 @@ class AboutScreen extends StatelessWidget {
               ),
               SizedBox(height: 20),
         
-              // Version Information
               Text(
                 'Version: 1.0.0',
                 style: TextStyle(fontSize: 16),
@@ -96,13 +90,12 @@ class AboutScreen extends StatelessWidget {
               ),
               Text(
                 'Developed by San Tech.\n'
-                    // 'Powered by Flutter.\n'
                     'Special thanks to the testers and contributors.',
                 style: TextStyle(fontSize: 16), 
               ),
               SizedBox(height: 20),
         
-              // Privacy Policy
+
               GestureDetector(
                 onTap: () {
 
@@ -114,7 +107,7 @@ class AboutScreen extends StatelessWidget {
               ),
               SizedBox(height: 20),
         
-              // User Feedback
+
               Text(
                 'User Feedback:',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),

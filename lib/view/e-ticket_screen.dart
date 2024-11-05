@@ -8,7 +8,7 @@ import 'package:e_bill/app_widgets/drawer.dart';
 import 'package:e_bill/app_widgets/vehicle_data.dart';
 import 'package:e_bill/view/history.dart';
 import 'package:e_bill/providers/vehicle_provider.dart';
-import '../models/vehicle.dart'; // Prefix for widgets_and_data.dart
+import '../models/vehicle.dart'; 
 
 class ETicketScreen extends StatefulWidget {
   @override
@@ -25,7 +25,6 @@ class _ETicketScreenState extends State<ETicketScreen>
   String dropdownValue = 'Floor, Section, and Spot'; // Declare here
   final VehicleApi data = VehicleApi();
 
-  // Variables to hold the selected vehicle type and model
   String? selectedVehicleType;
   String? selectedModel;
   String vehicleTypeError = '';
@@ -40,7 +39,6 @@ class _ETicketScreenState extends State<ETicketScreen>
   List<String> availableSpots = [];
   List<String> filledSpots = [];
 
-// List to hold generated tickets
   List<String> generatedTickets = [];
   @override
   void initState() {
@@ -54,18 +52,16 @@ class _ETicketScreenState extends State<ETicketScreen>
     availableSpots = Provider.of<VehicleProvider>(context, listen: false)
         .availableSpots; // Get available spots
     _requestStoragePermission();
-    data.fetchVehicles(); // Fetch data when the widget is initialized
+    data.fetchVehicles();
   }
 
   Future<void> _requestStoragePermission() async {
     PermissionStatus status = await Permission.storage.status;
 
     if (!status.isGranted) {
-      // Request permission if it's not granted
       await Permission.storage.request();
     }
 
-    // For Android 11 and above, request MANAGE_EXTERNAL_STORAGE if necessary
     if (await Permission.manageExternalStorage.isPermanentlyDenied) {
       await Permission.manageExternalStorage.request();
     }
@@ -74,7 +70,6 @@ class _ETicketScreenState extends State<ETicketScreen>
   Future<void> _generateTicket() async {
     if (vehicleData.formKey.currentState!.validate()) {
       try {
-        // Validate selected spot
         if (selectedSpot == null ||
             filledSpots.contains(selectedSpot) ||
             selectedSection == null) {
@@ -82,7 +77,7 @@ class _ETicketScreenState extends State<ETicketScreen>
             content: Text(
                 'Selected spot is not available. Please choose a different spot.'),
           ));
-          return; // Exit early if the spot is not valid
+          return;
         }
 
         final vehicleNumber = vehicleData.vehicleNumberController.text;
@@ -100,7 +95,6 @@ class _ETicketScreenState extends State<ETicketScreen>
           vehicleColor: vehicleColor,
         );
 
-        // Add vehicle details to VehicleProvider
         Provider.of<VehicleProvider>(context, listen: false).addVehicle(
           newVehicle.name,
           newVehicle.number,
@@ -118,7 +112,7 @@ class _ETicketScreenState extends State<ETicketScreen>
             selectedSpot: '$selectedSection-$selectedSpot',
           ),
         ));
-        // In the _generateTicket method in ETicketScreen:
+
         Provider.of<VehicleProvider>(context, listen: false)
             .bookSpot('$selectedSection-$selectedSpot');
 
@@ -363,8 +357,8 @@ class _ETicketScreenState extends State<ETicketScreen>
                               setState(() {
                                 selectedFloor = value;
                                 selectedSection =
-                                null; // Reset section when floor changes
-                                selectedSpot = null; // Reset selected spot
+                                null;
+                                selectedSpot = null;
                               });
                               _showSectionsAndSpots();
                             },
